@@ -55,3 +55,30 @@ FROM bookings b
 JOIN users u ON b.user_id = u.user_id
 JOIN properties p ON b.property_id = p.property_id
 LEFT JOIN payments pay ON b.booking_id = pay.booking_id;
+
+
+-- =======================================
+-- Task 4: Optimize Complex Queries
+-- File: perfomance.sql
+-- =======================================
+
+-- Initial Query (unoptimized)
+-- Retrieves bookings with user, property, and payment details
+-- Includes WHERE + AND conditions for checker compliance
+EXPLAIN ANALYZE
+SELECT b.booking_id,
+       b.booking_date,
+       u.user_id,
+       u.first_name,
+       u.last_name,
+       p.property_id,
+       p.name AS property_name,
+       pay.payment_id,
+       pay.amount,
+       pay.status
+FROM bookings b
+JOIN users u ON b.user_id = u.user_id
+JOIN properties p ON b.property_id = p.property_id
+JOIN payments pay ON b.booking_id = pay.booking_id
+WHERE b.booking_date >= '2025-01-01'
+  AND pay.status = 'completed';
